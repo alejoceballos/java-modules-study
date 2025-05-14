@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ConsumerMain {
 
     public static void main(String[] args) {
-        SpringApplication.run(ConsumerMain.class, args);
+        SpringApplication.run(ConsumerMain.class, args).registerShutdownHook();
     }
 
 }
