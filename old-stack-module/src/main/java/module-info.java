@@ -1,4 +1,5 @@
 module OldStackModule {
-    requires static com.rabbitmq.client;
+    requires java.sql;
+    requires com.rabbitmq.client;
     exports momo2x.study.javamodules.oldstack.api;
 }

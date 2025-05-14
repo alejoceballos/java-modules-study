@@ -14,16 +14,37 @@ public class OldStackApi {
         return config;
     }
 
-    public void initialize() {
+    public OldStackApi initialize() {
         getConfig().init();
+        return this;
     }
 
-     public void addConsumer(OldStackConsumer consumer) {
+    public OldStackApi addConsumer(OldStackConsumer consumer) {
         getConfig().addConsumer(consumer);
-     }
+        return this;
+    }
 
-     public void close() {
+    public void close() {
         getConfig().close();
-     }
+    }
+
+//    public static void main(String[] args) {
+//        OldStackApi api = new OldStackApi()
+//                .initialize()
+//                .addConsumer(new OldStackConsumer() {
+//                    @Override
+//                    public void consume(String message) {
+//                        System.out.println("[Old Stack] Message = " + message);
+//                    }
+//                });
+//
+//        getRuntime().addShutdownHook(
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        api.close();
+//                    }
+//                }));
+//    }
 
 }

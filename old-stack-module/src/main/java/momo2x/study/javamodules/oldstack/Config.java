@@ -21,12 +21,14 @@ public class Config {
     public static final String EXCHANGE_NAME = "java-modules-study-exchange";
     public static final String EXCHANGE_TYPE = "topic";
 
-    private static final String QUEUE_NAME = "java-modules-study-queue";
+    private static final String QUEUE_NAME = "java-modules-study-queue-1";
 
     private Connection connection;
     private Channel channel;
 
-    public void init() {
+    private boolean initialized;
+
+    public Config init() {
         try {
             ConnectionFactory factory = new ConnectionFactory();
             factory.setHost(HOST);
@@ -34,13 +36,22 @@ public class Config {
 
             channel = connection.createChannel();
             channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE, true, false, new HashMap<>(0));
+
+            initialized = true;
+
+            return this;
+
         } catch (final IOException | TimeoutException e) {
             throw new OldStackException(e);
         }
 
     }
 
-    public void addConsumer(OldStackConsumer consumer) {
+    public Config addConsumer(final OldStackConsumer consumer) {
+        if (!initialized) {
+            throw new OldStackException("Config must be initialized");
+        }
+
         try {
             channel.basicConsume(
                     QUEUE_NAME,
@@ -56,6 +67,8 @@ public class Config {
                             channel.basicAck(envelope.getDeliveryTag(), false);
                         }
                     });
+
+            return this;
         } catch (final IOException e) {
             throw new OldStackException(e);
         }
